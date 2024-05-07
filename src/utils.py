@@ -1,6 +1,6 @@
 import logging
-import requests
 
+import requests
 
 MOVIE_COLUMN_NAMES = {
     0: 'id',
@@ -47,16 +47,16 @@ def person_row_to_dict(person_rows: tuple, person_type: str) -> dict:
 
 
 def load_to_es(db_path: str, data: str) -> None:
-    
+
     logger = logging.getLogger()
-    
+
     request = requests.post(
         url='http://elastic:9200/movies/_bulk?filter_path=items.*.error',
         data=data,
         headers={'Content-Type': 'application/json'},
     )
     response = request.json()
-    
+
     for item in response.get('items', []):
         error_message = item['index'].get('error')
         if error_message:

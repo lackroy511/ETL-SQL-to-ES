@@ -1,6 +1,7 @@
-from src.db_connector import MoviesDB
-from src.utils import movie_row_to_dict, person_row_to_dict, load_to_es
 import json
+
+from src.db_connector import MoviesDB
+from src.utils import load_to_es, movie_row_to_dict, person_row_to_dict
 
 
 def main():
@@ -40,7 +41,7 @@ def main():
         result += '\n'
 
     load_to_es(
-        db_path='http://elastic:9200/movies/_bulk?filter_path=items.*.error', 
+        db_path='http://elastic:9200/movies/_bulk?filter_path=items.*.error',
         data=result,
     )
 

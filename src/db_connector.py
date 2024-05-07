@@ -1,5 +1,5 @@
-import sqlite3
 import json
+import sqlite3
 
 
 class SQLiteConnector:
@@ -12,7 +12,7 @@ class SQLiteConnector:
         self.connection = sqlite3.connect(self.db_path)
         self.cursor = self.connection.cursor()
         return self
-    
+
     def __exit__(self, exc_type, exc_value, traceback):
         self.connection.commit()
         self.cursor.close()
@@ -35,7 +35,7 @@ class MoviesDB(SQLiteConnector):
         if writer_id:
             query = f"SELECT * FROM writers WHERE id = '{writer_id}';"
             self.cursor.execute(query)
-        
+
         if writer_ids:
             writer_ids = json.loads(writer_ids)
             query = 'SELECT * FROM writers WHERE id IN ' + \
