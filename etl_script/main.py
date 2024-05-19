@@ -1,7 +1,8 @@
 import json
 
-from src.db_connector import MoviesDB
-from src.utils import load_to_es, movie_row_to_dict, person_row_to_dict
+from etl_script.db_connector import MoviesDB
+from etl_script.utils import get_imdb_rating, load_to_es, movie_row_to_dict, \
+    person_row_to_dict
 
 
 def main():
@@ -23,7 +24,7 @@ def main():
             }
             es_movie_data = {
                 'id': movie.get('id'),
-                'imdb_rating': float(movie.get('imdb_rating')) if movie.get('imdb_rating') else None,
+                'imdb_rating': get_imdb_rating(movie.get('imdb_rating')),
                 'genres': movie.get('genre'),
                 'title': movie.get('title'),
                 'description': movie.get('plot'),

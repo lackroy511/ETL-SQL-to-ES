@@ -61,3 +61,10 @@ def load_to_es(db_path: str, data: str) -> None:
         error_message = item['index'].get('error')
         if error_message:
             logger.error(error_message)
+            
+
+def get_imdb_rating(imdb_rating: str | None) -> float:
+    if imdb_rating:
+        return float(imdb_rating)
+    
+    return None

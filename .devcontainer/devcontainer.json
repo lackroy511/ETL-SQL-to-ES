@@ -33,7 +33,8 @@
 				"SeeLog.python-init-generator",
 				"mtxr.sqltools-driver-sqlite",
 				"mechatroner.rainbow-csv",
-				"mtxr.sqltools-driver-pg"
+				"mtxr.sqltools-driver-pg",
+				"redhat.vscode-yaml"
 			]
 		}
 	}
