@@ -1,12 +1,12 @@
 version: '3'
 services:
-  sqlite:
-    container_name: sqlLite
+  main:
+    container_name: main
     build:
       context: .
       dockerfile: dockerfile
     ports:
-      - "9100:9100"
+      - "8000:8000"
     command: tail -f /dev/null
     volumes:
       - .:/root/project
