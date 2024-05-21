@@ -8,20 +8,19 @@ ES_BASE_URL = 'http://elastic:9200'
 
 @app.route('/api/movies', methods=['GET'], strict_slashes=False)
 def movies_list() -> str:
-    url = f'{ES_BASE_URL}/movies/_search'
 
     page = request.args.get('page', default=1, type=int)
     limit = request.args.get('limit', default=50, type=int)
-    sort_by = request.args.get('sort_by', default='id', type=str)
+    sort_field = request.args.get('sort_by', default='id', type=str)
     sort_order = request.args.get('sort_order', default='asc', type=str)
     search = request.args.get('search', default='', type=str)
 
     query = {
-        'from': (page - 1) * limit,
+        'from': ((page if page > 0 else 1) - 1) * limit,
         'size': limit,
         'sort':  [
             {
-                sort_by: {
+                sort_field: {
                     'order': sort_order,
                 },
             },
@@ -33,16 +32,20 @@ def movies_list() -> str:
                 'query': search,
                 'fuzziness': 'auto',
                 'fields': [
-                    'title^5',
-                    'description^4',
+                    'title^1',
+                    'description^2',
                     'genre^3',
-                    'actors_names^3',
-                    'writers_names^2',
+                    'actors_names^4',
+                    'writers_names^5',
                 ],
             },
         }
 
-    response = requests.get(url)
+    response = requests.get(
+        url=f'{ES_BASE_URL}/movies/_search',
+        headers={'Content-Type': 'application/json'},
+        json=query,
+    )
 
     return response.json()
 
