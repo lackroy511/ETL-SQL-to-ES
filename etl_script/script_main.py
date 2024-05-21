@@ -7,7 +7,6 @@ from etl_script.utils import get_imdb_rating, load_to_es, movie_row_to_dict, \
 
 def main():
     result = ''
-    counter = 0
     with MoviesDB('db.sqlite') as db:
         movies = db.get_movies()
         for movie in movies:
@@ -36,7 +35,6 @@ def main():
             }
             result += json.dumps(es_movie_meta_data, ensure_ascii=False) + '\n'
             result += json.dumps(es_movie_data, ensure_ascii=False) + '\n'
-            counter += 1
 
     load_to_es(
         db_path='http://elastic:9200/movies/_bulk?filter_path=items.*.error',
