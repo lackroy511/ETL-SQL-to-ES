@@ -1,20 +1,38 @@
 from flask import Flask, jsonify, request
-
+import requests
 
 app = Flask('movies_service')
+
+ES_BASE_URL = 'http://elastic:9200'
 
 
 @app.route('/api/movies', methods=['GET'], strict_slashes=False)
 def movies_list() -> str:
-    # Код, получающий данные из ES об отфильтрованном по request.args
-    # списке фильмов
+    url = f'{ES_BASE_URL}/movies/_search'
     
-    filters = request.args.to_dict()
-    
-    result = {
-        'some_key': 'some_value',
+    query = {
+        'from': 0,
+        'size': 10,
+        'sort': [
+        ],
+        'query': {
+            'multi_match': {
+                'query': '',
+                'fuzziness': 'auto',
+                'fields': [
+                    'title^5',
+                    'description^4',
+                    'genre^3',
+                    'actors_names^3',
+                    'writers_names^2',
+                ],
+            },
+        },
     }
-    return jsonify(result)
+
+    response = requests.get(url)
+
+    return response.json()
 
 
 @app.route('/api/movies/<movie_id>', methods=['GET'])
