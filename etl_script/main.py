@@ -38,9 +38,6 @@ def main():
             result += json.dumps(es_movie_data, ensure_ascii=False) + '\n'
             counter += 1
 
-    for _ in range(counter):
-        result += '\n'
-
     load_to_es(
         db_path='http://elastic:9200/movies/_bulk?filter_path=items.*.error',
         data=result,

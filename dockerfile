@@ -22,6 +22,10 @@ RUN pip install flake8 flake8-bugbear pep8-naming flake8-commas \
     flake8-indent-in-def flake8-newspaper-style flake8-return flake8-length flake8-quotes \
     isort
 
+RUN pip install --upgrade pip
+
+RUN pip install -r requirements.txt
+
 RUN git config --global user.name "lackroy511"
 
 RUN git config --global user.email lackroy511@gmail.com
