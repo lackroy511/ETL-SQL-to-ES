@@ -53,13 +53,14 @@ def movies_list() -> str:
 @app.route('/api/movies/<movie_id>', methods=['GET'])
 def movie_details(movie_id: str) -> str:
     # Код, получающий данные из ES об одном фильме
-
-    result = {
-        'some_key': 'some_value',
-    }
-
-    return jsonify(result)
+    url = f'{ES_BASE_URL}/movies/_doc/{movie_id}'
+    
+    response = requests.get(
+        url=url,
+        headers={'Content-Type': 'application/json'},
+    )
+    return response.json()
 
 
 if __name__ == '__main__':
-    app.run(port=8000)
+    app.run()
