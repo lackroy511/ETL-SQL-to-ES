@@ -39,7 +39,7 @@ def form_query(request: Request) -> dict:
 
 def form_response(response_json: dict) -> list:
     result = []
-    hits = response_json['hits']['hits']
+    hits = response_json.get('hits', {}).get('hits', [])
     for hit in hits:
         result.append({
             'id': hit['_id'],
