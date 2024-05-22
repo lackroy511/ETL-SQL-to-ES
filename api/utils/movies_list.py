@@ -1,27 +1,29 @@
+from flask import Request
 
-def form_query(request):
+from api.models import MoviesListParams
+
+from pydantic import ValidationError
+
+
+def form_query(request: Request) -> dict:
     
-    page = request.args.get('page', default=1, type=int)
-    limit = request.args.get('limit', default=50, type=int)
-    sort_field = request.args.get('sort_by', default='id', type=str)
-    sort_order = request.args.get('sort_order', default='asc', type=str)
-    search = request.args.get('search', default='', type=str)
+    params = MoviesListParams(**request.args.to_dict())
 
     query = {
-        'from': ((page if page > 0 else 1) - 1) * limit,
-        'size': limit,
+        'from': ((params.page if params.page > 0 else 1) - 1) * params.limit,
+        'size': params.limit,
         'sort':  [
             {
-                sort_field: {
-                    'order': sort_order,
+                params.sort_field: {
+                    'order': params.sort_order,
                 },
             },
         ],
     }
-    if search:
+    if params.search:
         query['query'] = {
             'multi_match': {
-                'query': search,
+                'query': params.search,
                 'fuzziness': 'auto',
                 'fields': [
                     'title^1',
@@ -34,3 +36,17 @@ def form_query(request):
         }
     
     return query
+
+
+def form_response(response_json: dict) -> list:
+    result = []
+    hits = response_json['hits']['hits']
+    for hit in hits:
+        result.append({
+            'id': hit['_id'],
+            'title': hit['_source']['title'],
+            'imdb_rating': hit['_source']['imdb_rating'],
+            
+        })
+    
+    return result

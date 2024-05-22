@@ -1,7 +1,8 @@
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, Request
 import requests
 from flask_cors import CORS
-from api.utils.movies_list import form_query
+from api.utils.movies_list import form_query, form_response
+from pydantic import ValidationError
 
 app = Flask('movies_service')
 CORS(app)
@@ -12,7 +13,12 @@ ES_BASE_URL = 'http://elastic:9200'
 @app.route('/api/movies', methods=['GET'], strict_slashes=False)
 def movies_list() -> str:
 
-    query = form_query(request)
+    try:
+        query = form_query(request)
+    except ValidationError as e:
+        response = jsonify(e.errors(include_url=False))
+        response.status_code = 422
+        return response
 
     response = requests.get(
         url=f'{ES_BASE_URL}/movies/_search',
@@ -20,15 +26,7 @@ def movies_list() -> str:
         json=query,
     )
     
-    result = []
-    hits = response.json()['hits']['hits']
-    for hit in hits:
-        result.append({
-            'id': hit['_id'],
-            'title': hit['_source']['title'],
-            'imdb_rating': hit['_source']['imdb_rating'],
-            
-        })
+    result = form_response(response_json=response.json())
 
     return jsonify(result)
 
