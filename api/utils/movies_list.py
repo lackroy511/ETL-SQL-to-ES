@@ -1,8 +1,7 @@
 from flask import Request
+from pydantic import ValidationError
 
 from api.models import MoviesListParams
-
-from pydantic import ValidationError
 
 
 def form_query(request: Request) -> dict:

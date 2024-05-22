@@ -1,8 +1,9 @@
-from flask import Flask, jsonify, request, Request
 import requests
+from flask import Flask, Request, jsonify, request
 from flask_cors import CORS
-from api.utils.movies_list import form_query, form_response
 from pydantic import ValidationError
+
+from api.utils.movies_list import form_query, form_response
 
 app = Flask('movies_service')
 CORS(app)

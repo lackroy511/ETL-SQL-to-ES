@@ -1,6 +1,7 @@
 from enum import Enum
-from pydantic import BaseModel, PositiveInt
 from typing import Literal
+
+from pydantic import BaseModel, PositiveInt
 
 
 class SortOrder(str, Enum):

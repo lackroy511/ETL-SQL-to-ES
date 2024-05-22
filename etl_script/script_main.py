@@ -1,8 +1,8 @@
 import json
 
 from etl_script.db_connector import MoviesDB
-from etl_script.utils import get_imdb_rating, load_to_es, movie_row_to_dict, \
-    person_row_to_dict
+from etl_script.utils import (get_imdb_rating, load_to_es, movie_row_to_dict,
+                              person_row_to_dict)
 
 
 def main():
