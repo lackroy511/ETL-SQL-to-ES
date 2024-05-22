@@ -10,6 +10,10 @@ services:
     command: tail -f /dev/null
     volumes:
       - .:/root/project
+    deploy:
+      resources:
+        limits:
+          memory: 2G
 
   elasticsearch:
     container_name: elastic
