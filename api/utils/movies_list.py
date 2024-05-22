@@ -10,11 +10,11 @@ def form_query(request: Request) -> dict:
     params = MoviesListParams(**request.args.to_dict())
 
     query = {
-        'from': ((params.page if params.page > 0 else 1) - 1) * params.limit,
+        'from': (params.page - 1) * params.limit,
         'size': params.limit,
         'sort':  [
             {
-                params.sort_field: {
+                params.sort: {
                     'order': params.sort_order,
                 },
             },

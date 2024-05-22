@@ -1,5 +1,5 @@
 from enum import Enum
-from pydantic import BaseModel
+from pydantic import BaseModel, PositiveInt
 from typing import Literal
 
 
@@ -15,9 +15,9 @@ class SortField(str, Enum):
 
 
 class MoviesListParams(BaseModel):
-    page: int = 1
-    limit: int = 50
-    sort_field: Literal[
+    page: PositiveInt = 1
+    limit: PositiveInt = 50
+    sort: Literal[
         SortField.id,
         SortField.film_title,
         SortField.imdb_rating,
